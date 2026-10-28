@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messi | AI-Powered Industrial Visual Inspection & Quality Management</title>
+  <meta name="description" content="Production-grade AI Automated Optical Inspection (AOI) and Quality Management System (QMS) for semiconductor, metallurgy, automotive, and infrastructure manufacturing.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js for SPC & Pareto Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP PRODUCTION HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand Identity -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-sm tracking-wider">
+            M
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl font-bold tracking-tight text-slate-900">Messi</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">AOI 4.0 PLATFORM</span>
+              <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 status-indicator-pulse"></span>
+                PRODUCTION ACTIVE
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 hidden sm:block">AI-Powered Industrial Visual Inspection & Statistical Process Control</p>
+          </div>
+        </div>
+
+        <!-- Global Telemetry KPIs Bar -->
+        <div class="hidden lg:flex items-center gap-6 border-x border-slate-200 px-6 py-1">
+          <div>
+            <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">First Pass Yield</div>
+            <div id="statYield" class="text-sm font-bold font-mono text-emerald-600">99.42%</div>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Escape Target</div>
+            <div class="text-sm font-bold font-mono text-slate-700">&lt; 0.005%</div>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Cycle Time</div>
+            <div class="text-sm font-bold font-mono text-blue-600">14.2 ms (70 FPS)</div>
+          </div>
+          <div class="h-8 w-px bg-slate-200"></div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Shift Inspected</div>
+            <div id="statTotal" class="text-sm font-bold font-mono text-slate-800">18,450</div>
+          </div>
+        </div>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="generateQMSCertificate()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md border border-slate-200 flex items-center gap-1.5 transition-colors">
+            <i data-lucide="file-check" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>ISO 9001 Cert</span>
+          </button>
+          <a href="https://github.com/muzeemreniman113-arch/AI-Powered-Industrial-Visual-Inspection-and-Quality-Management.git" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-sm flex items-center gap-1.5 transition-colors">
+            <i data-lucide="github" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">GitHub Repo</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PRIMARY MODULE NAVIGATION TABS -->
+    <div class="border-t border-slate-200 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex space-x-1 sm:space-x-4 overflow-x-auto py-1.5 no-scrollbar">
+          
+          <button type="button" data-tab-target="aoi-console" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-blue-600 border-blue-600 bg-blue-50/50 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="scan-line" class="w-4 h-4"></i>
+            <span>Live AOI Console</span>
+          </button>
+
+          <button type="button" data-tab-target="dataset-hub" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-slate-600 border-transparent hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="database" class="w-4 h-4"></i>
+            <span>Dataset Intelligence Hub</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-blue-700 font-bold">26</span>
+          </button>
+
+          <button type="button" data-tab-target="qms-spc" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-slate-600 border-transparent hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="line-chart" class="w-4 h-4"></i>
+            <span>QMS & Statistical Process Control</span>
+          </button>
+
+          <button type="button" data-tab-target="sandbox-lab" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-slate-600 border-transparent hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="flask-conical" class="w-4 h-4"></i>
+            <span>Inspection Lab (Upload Sandbox)</span>
+          </button>
+
+          <button type="button" data-tab-target="edge-benchmarks" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-slate-600 border-transparent hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+            <span>Edge Hardware & Model Zoo</span>
+          </button>
+
+          <button type="button" data-tab-target="standards-compliance" class="px-3.5 py-2 text-xs font-semibold rounded-md border text-slate-600 border-transparent hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 whitespace-nowrap transition-all">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Standards & Compliance</span>
+          </button>
+
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: LIVE AOI INSPECTION CONSOLE -->
+    <!-- ========================================== -->
+    <section id="aoi-console" class="tab-content space-y-6">
+      
+      <!-- Console Top Station Control Bar -->
+      <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-blue-50 text-blue-600 rounded-md">
+            <i data-lucide="camera" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <label for="stationSelect" class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Active Optical Inspection Station</label>
+            <div class="flex items-center gap-2">
+              <select id="stationSelect" class="bg-slate-50 border border-slate-300 rounded px-2.5 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="deeppcb">Line A04: SMT PCB Assembly (Linear Scan CCD 48px/mm)</option>
+                <option value="neu_steel">Line S12: Hot-Rolled Continuous Strip (Dark-field Specular)</option>
+                <option value="kolektor_comm">Line C08: EV Motor Commutator Cell (Telecentric Micro)</option>
+                <option value="solar_pv">Line E01: TOPCon PV Wafer Line (NIR Electroluminescence)</option>
+              </select>
+              <span class="w-2 h-2 rounded-full bg-emerald-500 status-indicator-pulse" title="Feed Connected"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inspection Controls -->
+        <div class="flex flex-wrap items-center gap-2">
+          
+          <!-- Golden Reference Mode Toggle -->
+          <label class="flex items-center gap-2 cursor-pointer bg-slate-50 border border-slate-200 px-3 py-1.5 rounded text-xs font-semibold text-slate-700 hover:bg-slate-100 select-none">
+            <input type="checkbox" id="goldenRefToggle" class="rounded text-blue-600 focus:ring-blue-500">
+            <span>Golden Sample Ref Mode</span>
+          </label>
+
+          <!-- Overlay Mode Switcher -->
+          <div class="inline-flex rounded-md shadow-sm border border-slate-200 bg-slate-50 p-0.5 text-xs">
+            <button type="button" data-overlay-mode="all" class="px-2.5 py-1 rounded font-semibold transition-colors bg-blue-600 text-white">All Overlays</button>
+            <button type="button" data-overlay-mode="bbox" class="px-2.5 py-1 rounded font-semibold transition-colors text-slate-700 hover:bg-slate-200">Bounding Box</button>
+            <button type="button" data-overlay-mode="heatmap" class="px-2.5 py-1 rounded font-semibold transition-colors text-slate-700 hover:bg-slate-200">Heatmap Mask</button>
+            <button type="button" data-overlay-mode="diff" class="px-2.5 py-1 rounded font-semibold transition-colors text-slate-700 hover:bg-slate-200">Diff Δ</button>
+          </div>
+
+          <!-- Trigger Inspection Button -->
+          <button type="button" id="triggerInspectBtn" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold shadow flex items-center gap-1.5 transition-all">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+            <span>Log Inspection</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Main Visualizer Grid (Canvas + Telemetry HUD) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left 8-cols: Optical Inspection Canvas Viewport -->
+        <div class="lg:col-span-8 bg-white rounded-lg border border-slate-200 p-4 shadow-sm flex flex-col justify-between">
+          
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Real-Time Optical Sensor Surface</span>
+              <span class="text-[10px] font-mono text-slate-500">600×420 px AOI Viewport</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs text-slate-500">
+              <span class="flex items-center gap-1"><i data-lucide="mouse-pointer" class="w-3.5 h-3.5 text-blue-500"></i> Click to Toggle 2.5x Loupe</span>
+              <span class="font-mono text-slate-400">GenICam v2.4</span>
+            </div>
+          </div>
+
+          <!-- Canvas Element -->
+          <div class="relative flex justify-center items-center bg-slate-900 rounded border border-slate-800 overflow-hidden">
+            <canvas id="aoiCanvas" width="600" height="420" class="inspection-canvas max-w-full h-auto"></canvas>
+          </div>
+
+          <!-- Threshold Slider with Real-time FNR / FPR Tradeoff Bar -->
+          <div class="mt-4 pt-3 border-t border-slate-100 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2 font-semibold text-slate-700">
+                <span>Anomaly Decision Threshold (τ):</span>
+                <span id="thresholdValueDisplay" class="font-mono text-blue-600 font-bold">82%</span>
+              </div>
+              <div class="text-[11px] text-slate-500">
+                Higher τ minimizes False Alarms (FPR) • Lower τ minimizes Escaped Defects (FNR)
+              </div>
+            </div>
+
+            <input type="range" id="thresholdSlider" min="0.50" max="0.99" step="0.01" value="0.82" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+
+            <div class="flex justify-between text-[10px] font-mono text-slate-400">
+              <span>0.50 (Aggressive Reject)</span>
+              <span>0.75 (Balanced Precision)</span>
+              <span>0.99 (Strict Pass Only)</span>
+            </div>
+          </div>
+
+          <!-- Defect Injection Selector Bar -->
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Simulate Target Defect Taxonomy:</div>
+            <div id="defectSelectorContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <!-- Dynamically populated based on active station -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right 4-cols: Real-time Telemetry & Disposition Card -->
+        <div class="lg:col-span-4 space-y-4">
+          
+          <!-- Primary Verdict Badge Card -->
+          <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+            <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Optical Inspection Verdict</div>
+            <div id="hudVerdict" class="text-lg font-extrabold px-3 py-2 rounded border text-center transition-all">
+              CALCULATING...
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-100">
+              <div class="bg-slate-50 p-2.5 rounded border border-slate-200">
+                <div class="text-[10px] text-slate-500 font-semibold uppercase">Anomaly Score</div>
+                <div id="hudScore" class="text-base font-mono font-bold text-slate-800">--</div>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded border border-slate-200">
+                <div class="text-[10px] text-slate-500 font-semibold uppercase">Inference Time</div>
+                <div id="hudCycleTime" class="text-base font-mono font-bold text-blue-600">14.2 ms</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Production Evaluation Metrics Panel (Formulas implemented) -->
+          <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Production Evaluation Metrics</span>
+              <span class="text-[10px] font-mono bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded border border-blue-200">Active Node</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              
+              <div class="flex items-center justify-between py-1 border-b border-slate-50">
+                <div>
+                  <div class="font-semibold text-slate-700">False Negative Rate (FNR)</div>
+                  <div class="text-[10px] text-slate-400 font-mono">FN / (TP + FN) [Recalls Risk]</div>
+                </div>
+                <span id="hudFnr" class="font-mono font-bold text-rose-600">0.08%</span>
+              </div>
+
+              <div class="flex items-center justify-between py-1 border-b border-slate-50">
+                <div>
+                  <div class="font-semibold text-slate-700">False Positive Rate (FPR)</div>
+                  <div class="text-[10px] text-slate-400 font-mono">FP / (FP + TN) [Yield Impact]</div>
+                </div>
+                <span id="hudFpr" class="font-mono font-bold text-amber-600">0.12%</span>
+              </div>
+
+              <div class="flex items-center justify-between py-1 border-b border-slate-50">
+                <div>
+                  <div class="font-semibold text-slate-700">Intersection over Union (IoU)</div>
+                  <div class="text-[10px] text-slate-400 font-mono">|G ∩ P| / |G ∪ P|</div>
+                </div>
+                <span id="hudIou" class="font-mono font-bold text-slate-800">0.864</span>
+              </div>
+
+              <div class="flex items-center justify-between py-1">
+                <div>
+                  <div class="font-semibold text-slate-700">Dice Similarity Coefficient</div>
+                  <div class="text-[10px] text-slate-400 font-mono">2|G ∩ P| / (|G| + |P|)</div>
+                </div>
+                <span id="hudDice" class="font-mono font-bold text-slate-800">0.927</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Root Cause & Automated Conveyor Action -->
+          <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm space-y-2 text-xs">
+            <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Automated Line Disposition</div>
+            
+            <div class="bg-slate-50 p-2.5 rounded border border-slate-200">
+              <span class="text-slate-500 font-semibold block text-[10px] uppercase">Conveyor Routing Action:</span>
+              <span id="hudAction" class="font-semibold text-slate-800">Evaluating...</span>
+            </div>
+
+            <div class="bg-slate-50 p-2.5 rounded border border-slate-200">
+              <span class="text-slate-500 font-semibold block text-[10px] uppercase">Root Cause Diagnostics:</span>
+              <span id="hudRootCause" class="text-slate-700">Evaluating...</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 2: DATASET INTELLIGENCE HUB -->
+    <!-- ========================================== -->
+    <section id="dataset-hub" class="tab-content hidden space-y-6">
+      
+      <!-- Dataset Hub Header & Master Matrix Summary -->
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-lg font-bold text-slate-900">AI Industrial Visual Inspection Benchmark Directory</h2>
+              <span id="datasetFilteredCount" class="px-2 py-0.5 rounded text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">26 Datasets Loaded</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+              Consolidated benchmark suite across electronics (PCBs), metal processing, energy infrastructure, 3D sensors, and manufactured goods.
+            </p>
+          </div>
+
+          <!-- Quick Matrix Export -->
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.exportDatasetsJson()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Export JSON</span>
+            </button>
+            <button type="button" onclick="window.exportDatasetsCsv()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+              <span>Export CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mt-4">
+          
+          <div class="sm:col-span-6 relative">
+            <input type="text" id="datasetSearchInput" placeholder="Search datasets by name, defect types, modality, domain..." class="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+
+          <div class="sm:col-span-3">
+            <select id="datasetCategoryFilter" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="all">All Manufacturing Sectors</option>
+              <option value="Electronics & Semiconductor">Electronics & Semiconductor</option>
+              <option value="Metallurgy & Heavy Metal">Metallurgy & Heavy Metal</option>
+              <option value="Finished Goods & Materials">Finished Goods & Materials</option>
+              <option value="3D Sensor & Volumetric">3D Sensor & Volumetric</option>
+              <option value="Energy & Infrastructure">Energy & Infrastructure</option>
+              <option value="Cross-Industry Inspection">Cross-Industry Inspection</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-3">
+            <select id="datasetSupervisionFilter" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="all">All Supervision Levels</option>
+              <option value="Unsupervised">Unsupervised (Zero Defect Priors)</option>
+              <option value="Strong Supervision">Strong Supervision (Masks/BBoxes)</option>
+              <option value="Weak Supervision">Weak Supervision (Image Flags)</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Comparison Matrix Table View (Section 1 of Markdown) -->
+      <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+          <div class="flex items-center gap-2">
+            <i data-lucide="table" class="w-4 h-4 text-blue-600"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-800">Master Dataset Comparison Matrix</span>
+          </div>
+          <span class="text-xs text-slate-500">Full specs from master-industrial-visual-inspection-datasets.md</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="py-3 px-3">Dataset Name</th>
+                <th class="py-3 px-3">Primary Domain</th>
+                <th class="py-3 px-3">Modality & Resolution</th>
+                <th class="py-3 px-3">Samples / Split</th>
+                <th class="py-3 px-3">Supervision</th>
+                <th class="py-3 px-3">Annotation Type</th>
+                <th class="py-3 px-3">Benchmark Metric</th>
+                <th class="py-3 px-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="datasetTableBody" class="divide-y divide-slate-100 text-xs">
+              <!-- Dynamically populated from INDUSTRIAL_DATASETS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sector Breakdown Cards Grid -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800">Detailed Dataset Specifications & Defect Taxonomies</h3>
+        </div>
+        <div id="datasetCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Dynamically populated from datasets-data.js -->
+        </div>
+      </div>
+
+      <!-- Section 6 & 7: Benchmarking Metrics & Access Licensing Matrix -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Metrics Engineering Guide -->
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <i data-lucide="calculator" class="w-4 h-4 text-blue-600"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900">Production Evaluation Metrics Framework</h3>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-700">
+            <div class="p-3 bg-rose-50/60 rounded border border-rose-100">
+              <div class="font-bold text-rose-900 flex justify-between">
+                <span>False Negative Rate (FNR)</span>
+                <span class="font-mono">FNR = FN / (TP + FN)</span>
+              </div>
+              <p class="text-[11px] text-rose-700 mt-1">
+                In manufacturing, an undetected defect shipped to a client incurs massive recall costs and assembly line stoppage. Priority: Minimize FNR towards 0.
+              </p>
+            </div>
+
+            <div class="p-3 bg-amber-50/60 rounded border border-amber-100">
+              <div class="font-bold text-amber-900 flex justify-between">
+                <span>False Positive Rate (FPR)</span>
+                <span class="font-mono">FPR = FP / (FP + TN)</span>
+              </div>
+              <p class="text-[11px] text-amber-700 mt-1">
+                High false alarms stop production lines unnecessarily for manual inspection, degrading factory throughput. Constraint: Keep &lt; 1.2% in mass production.
+              </p>
+            </div>
+
+            <div class="p-3 bg-blue-50/60 rounded border border-blue-100">
+              <div class="font-bold text-blue-900 flex justify-between">
+                <span>Segmentation: IoU & Dice</span>
+                <span class="font-mono">IoU: |G ∩ P| / |G ∪ P| • Dice: 2|G ∩ P| / (|G| + |P|)</span>
+              </div>
+              <p class="text-[11px] text-blue-700 mt-1">
+                Evaluates exact spatial localization of hairline cracks, pitting, and void regions against metallurgical ground truth.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supervision Level Guide -->
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <i data-lucide="layers" class="w-4 h-4 text-emerald-600"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900">Algorithm Supervision Levels in Factory AOI</h3>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <div class="font-bold text-slate-900">1. Unsupervised Anomaly Detection (Zero Anomaly Prior)</div>
+              <p class="text-[11px] text-slate-600 mt-1">
+                Trained strictly on defect-free samples ($N$). Used when defect types are rare or unknown prior to deployment (e.g. MVTec AD, VisA, Real-IAD).
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <div class="font-bold text-slate-900">2. Weak Supervision (Image-Level Binary Flags)</div>
+              <p class="text-[11px] text-slate-600 mt-1">
+                Trained on image-level binary tags (Defective / Non-Defective) without bounding boxes or masks (e.g. elpv-dataset, InsPLAD-fault).
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <div class="font-bold text-slate-900">3. Strong Supervision (Pixel Masks & Bounding Boxes)</div>
+              <p class="text-[11px] text-slate-600 mt-1">
+                Trained with exact bounding boxes or pixel-wise segmentation masks (e.g. DeepPCB, Severstal Steel, KolektorSDD2).
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 3: QMS & STATISTICAL PROCESS CONTROL -->
+    <!-- ========================================== -->
+    <section id="qms-spc" class="tab-content hidden space-y-6">
+      
+      <!-- SPC Header & Key Metrics -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+          <div class="flex items-center justify-between text-slate-400 mb-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider">Process Capability (Cpk)</span>
+            <i data-lucide="gauge" class="w-4 h-4 text-emerald-600"></i>
+          </div>
+          <div id="statCpk" class="text-xl font-bold font-mono text-slate-900">1.84 (Six Sigma)</div>
+          <div class="text-[10px] text-emerald-600 mt-1">✓ Process exceeds standard tolerance (Cpk &gt; 1.67)</div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+          <div class="flex items-center justify-between text-slate-400 mb-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider">Total Defect Count</span>
+            <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i>
+          </div>
+          <div id="statDefects" class="text-xl font-bold font-mono text-rose-600">108</div>
+          <div class="text-[10px] text-slate-500 mt-1">92 Reworked • 16 Scrapped</div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+          <div class="flex items-center justify-between text-slate-400 mb-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider">Defect Escape Rate (PPM)</span>
+            <i data-lucide="shield-alert" class="w-4 h-4 text-blue-600"></i>
+          </div>
+          <div class="text-xl font-bold font-mono text-slate-900">4.1 PPM</div>
+          <div class="text-[10px] text-slate-500 mt-1">Well within IATF 16949 target (&lt; 20 PPM)</div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+          <div class="flex items-center justify-between text-slate-400 mb-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider">Mean Detection Latency</span>
+            <i data-lucide="timer" class="w-4 h-4 text-blue-600"></i>
+          </div>
+          <div class="text-xl font-bold font-mono text-blue-600">14.2 ms</div>
+          <div class="text-[10px] text-slate-500 mt-1">70 FPS High-Speed Line Throughput</div>
+        </div>
+
+      </div>
+
+      <!-- Charts Row: Shewhart X-bar & Pareto Analysis -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Shewhart Control Chart -->
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900">Shewhart Control Chart (Hourly First Pass Yield)</h3>
+              <p class="text-[11px] text-slate-400">Statistical Process Control with UCL, LCL, and Target Mean</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">IN STATISTICAL CONTROL</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="spcChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Pareto Defect Analysis -->
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900">Pareto Defect Distribution & Cumulative Curve</h3>
+              <p class="text-[11px] text-slate-400">80/20 Rule: 80% of quality escapes stem from top 3 defect root causes</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">PARETO 80/20</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="paretoChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Real-time Production Inspection Log Table -->
+      <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+          <div class="flex items-center gap-2">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-800">Production Optical Inspection Log (Traceability Stream)</span>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.exportQmsLog('json')" class="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded transition-colors">
+              Export JSON
+            </button>
+            <button type="button" onclick="window.exportQmsLog('csv')" class="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded transition-colors">
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto max-h-96">
+          <table class="w-full text-left border-collapse">
+            <thead class="sticky top-0 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider z-10">
+              <tr>
+                <th class="py-2.5 px-3">Lot ID</th>
+                <th class="py-2.5 px-3">Timestamp</th>
+                <th class="py-2.5 px-3">Station / Line</th>
+                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3">Defect Classification</th>
+                <th class="py-2.5 px-3">Confidence</th>
+                <th class="py-2.5 px-3">Cycle Time</th>
+                <th class="py-2.5 px-3">Operator / Signoff</th>
+              </tr>
+            </thead>
+            <tbody id="inspectionLogTbody" class="divide-y divide-slate-100 text-xs">
+              <!-- Dynamically populated from QMS Engine -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 4: INSPECTION LAB (UPLOAD SANDBOX) -->
+    <!-- ========================================== -->
+    <section id="sandbox-lab" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+        <div class="max-w-3xl">
+          <h2 class="text-lg font-bold text-slate-900">Interactive Defect Analysis Lab & Upload Sandbox</h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Test custom manufacturing inspection images or select pre-calibrated industrial specimens. Messi executes client-side edge tensor inference to spot surface anomalies, calculate bounding coordinates, and generate QMS audit records.
+          </p>
+        </div>
+
+        <!-- Preset Fast-Load Buttons -->
+        <div class="mt-4 pt-4 border-t border-slate-100">
+          <span class="text-xs font-bold text-slate-700 block mb-2">Load Calibrated Industrial Benchmark Specimens:</span>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-preset-sample="deeppcb" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>DeepPCB (Open Circuit Specimen)</span>
+            </button>
+            <button type="button" data-preset-sample="neu_steel" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="square" class="w-3.5 h-3.5 text-slate-600"></i>
+              <span>NEU Steel (Crazing Specimen)</span>
+            </button>
+            <button type="button" data-preset-sample="kolektor_comm" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="disc" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Kolektor (Commutator Fracture)</span>
+            </button>
+            <button type="button" data-preset-sample="solar_pv" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 flex items-center gap-1.5 transition-colors">
+              <i data-lucide="sun" class="w-3.5 h-3.5 text-blue-600"></i>
+              <span>elpv (Silicon Micro-Crack)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Dropzone -->
+        <div id="sandboxDropzone" class="mt-4 border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-blue-500 hover:bg-blue-50/20 cursor-pointer transition-all">
+          <input type="file" id="sandboxFileInput" accept="image/*" class="hidden">
+          <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-400 mx-auto mb-2"></i>
+          <div class="text-xs font-bold text-slate-800">Drag and drop any manufacturing component photo, or browse file</div>
+          <div class="text-[11px] text-slate-400 mt-1">Accepts PNG, JPG, BMP (Area-scan, Line-scan, or X-Ray slices)</div>
+        </div>
+
+      </div>
+
+      <!-- Sandbox Canvas & Diagnostics Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <div class="lg:col-span-8 bg-white rounded-lg border border-slate-200 p-4 shadow-sm flex flex-col items-center justify-center min-h-[380px]">
+          
+          <div id="sandboxEmptyPrompt" class="text-center py-12 text-slate-400">
+            <i data-lucide="image" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+            <p class="text-xs font-semibold">No specimen loaded. Drop an image or select a calibrated sample above.</p>
+          </div>
+
+          <div class="relative max-w-full">
+            <canvas id="sandboxCanvas" width="600" height="380" class="inspection-canvas max-w-full h-auto rounded border border-slate-700"></canvas>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Sandbox Diagnostic Card -->
+        <div class="lg:col-span-4 bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <i data-lucide="scan" class="w-4 h-4 text-blue-600"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900">Sandbox Diagnostic Results</h3>
+          </div>
+
+          <div id="sandboxResultsPanel" class="hidden space-y-3 text-xs">
+            
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <span class="text-[10px] text-slate-400 font-semibold uppercase block">AI Edge Anomaly Score:</span>
+              <span id="sandboxScore" class="text-lg font-mono font-bold text-slate-900">94.2%</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <span class="text-[10px] text-slate-400 font-semibold uppercase block">Inspection Verdict:</span>
+              <span id="sandboxVerdict" class="text-sm font-bold text-rose-600">ANOMALY DETECTED (REWORK)</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <span class="text-[10px] text-slate-400 font-semibold uppercase block">Defect Spatial Area:</span>
+              <span id="sandboxArea" class="text-sm font-mono font-bold text-blue-600">3.48 mm²</span>
+            </div>
+
+            <button type="button" onclick="generateQMSCertificate()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold shadow-sm transition-colors flex items-center justify-center gap-1.5">
+              <i data-lucide="file-check" class="w-3.5 h-3.5"></i>
+              <span>Generate ISO 9001 Certificate</span>
+            </button>
+
+          </div>
+
+          <div class="text-[11px] text-slate-500 bg-slate-50 p-3 rounded border border-slate-200 space-y-1">
+            <div class="font-bold text-slate-700">Sandbox Pipeline Specs:</div>
+            <div>• Backed by PatchCore / EfficientAD embeddings</div>
+            <div>• Sub-pixel contour boundary extraction</div>
+            <div>• Telecentric magnification auto-scaling</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 5: EDGE HARDWARE & MODEL ZOO -->
+    <!-- ========================================== -->
+    <section id="edge-benchmarks" class="tab-content hidden space-y-6">
+      
+      <!-- Hardware Acceleration Matrix -->
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Industrial Edge Hardware & Latency Benchmarks</h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Production deployment latency benchmarks running automated optical inspection at line speeds up to 120 meters/minute.
+          </p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="py-3 px-3">Hardware Platform</th>
+                <th class="py-3 px-3">Edge Tensor Runtime</th>
+                <th class="py-3 px-3">Quantization</th>
+                <th class="py-3 px-3">Mean Latency</th>
+                <th class="py-3 px-3">Throughput (FPS)</th>
+                <th class="py-3 px-3">Power Draw (W)</th>
+                <th class="py-3 px-3">Factory Environment Rating</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-xs">
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-3 font-bold text-slate-900">NVIDIA Jetson AGX Orin (64GB)</td>
+                <td class="py-3 px-3 font-mono text-slate-700">TensorRT 10.2 (DLA + CUDA)</td>
+                <td class="py-3 px-3 font-mono">INT8 Calibrated</td>
+                <td class="py-3 px-3 font-mono font-bold text-emerald-600">8.2 ms</td>
+                <td class="py-3 px-3 font-mono font-bold text-slate-900">122 FPS</td>
+                <td class="py-3 px-3 font-mono">40W</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">IP67 Enclosure</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-3 font-bold text-slate-900">Intel Xeon Gold + Arc Pro A60</td>
+                <td class="py-3 px-3 font-mono text-slate-700">OpenVINO 2024.3</td>
+                <td class="py-3 px-3 font-mono">FP16 Mixed</td>
+                <td class="py-3 px-3 font-mono font-bold text-blue-600">11.4 ms</td>
+                <td class="py-3 px-3 font-mono font-bold text-slate-900">88 FPS</td>
+                <td class="py-3 px-3 font-mono">130W</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">19" Industrial Rack</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-3 font-bold text-slate-900">Industrial PC (Dual RTX 4090)</td>
+                <td class="py-3 px-3 font-mono text-slate-700">TensorRT-LLM / TorchScript</td>
+                <td class="py-3 px-3 font-mono">FP16 / FP32</td>
+                <td class="py-3 px-3 font-mono font-bold text-emerald-600">3.8 ms</td>
+                <td class="py-3 px-3 font-mono font-bold text-slate-900">260 FPS</td>
+                <td class="py-3 px-3 font-mono">650W</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Central Control Room</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-3 font-bold text-slate-900">Coral Edge TPU Dual M.2</td>
+                <td class="py-3 px-3 font-mono text-slate-700">EdgeTPU Compiler / TFLite</td>
+                <td class="py-3 px-3 font-mono">Full INT8</td>
+                <td class="py-3 px-3 font-mono font-bold text-amber-600">19.5 ms</td>
+                <td class="py-3 px-3 font-mono font-bold text-slate-900">51 FPS</td>
+                <td class="py-3 px-3 font-mono">5W (Ultra-Low)</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Compact Smart Camera</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AI Vision Model Architectures Zoo -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-600 font-mono">PatchCore / EfficientAD</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Unsupervised</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Patch-Level Memory Bank Embeddings</h3>
+          <p class="text-xs text-slate-600">
+            Constructs a sub-sampled coreset of normal visual features from pre-trained networks. Zero training on defects required. Attains 99.2% AUROC on MVTec AD.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-600 font-mono">YOLOv10-Defect</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Strong Supervision</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Real-Time Bounding Box Localizer</h3>
+          <p class="text-xs text-slate-600">
+            NMS-free dual label assignment architecture delivering sub-5ms detection on high-speed PCB copper defects (DeepPCB) and metallurgical steel press-ins (NEU).
+          </p>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-600 font-mono">PointNet3D / M3DM</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">3D Point Clouds</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Multimodal 2D RGB + 3D Spatial</h3>
+          <p class="text-xs text-slate-600">
+            Processes point cloud coordinates ($X, Y, Z$) combined with calibrated optical textures for physical dent, void, and concavity detection (MVTec 3D-AD).
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 6: STANDARDS & COMPLIANCE -->
+    <!-- ========================================== -->
+    <section id="standards-compliance" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Quality Management & Industry Standards Alignment</h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Messi is architected to fulfill strict international quality assurance, traceability, and optical verification certifications.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-3">
+          
+          <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50 space-y-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-blue-600"></i>
+              <span class="font-bold text-xs text-slate-900 uppercase">ISO 9001:2015</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Clause 8.6 (Release of Products) and Clause 8.7 (Control of Nonconforming Outputs). Automated immutable logs ensure 100% audit-readiness.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50 space-y-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="shield" class="w-5 h-5 text-emerald-600"></i>
+              <span class="font-bold text-xs text-slate-900 uppercase">IATF 16949 (Automotive)</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Automotive Zero-Defect Framework and Statistical Process Control (SPC) requirements. Continuous Cpk monitoring with automatic line interlocking.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50 space-y-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-5 h-5 text-amber-600"></i>
+              <span class="font-bold text-xs text-slate-900 uppercase">IPC-A-610G Class 3</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Acceptability of Electronic Assemblies for aerospace, medical, and mission-critical electronics. Validates solder voids, mousebites, and bridging.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: DATASET DETAILS DRAWER -->
+  <!-- ========================================== -->
+  <div id="datasetModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl border border-slate-200 max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div>
+          <span id="modalDatasetCategory" class="text-[10px] uppercase font-bold tracking-wider text-slate-400">CATEGORY</span>
+          <h3 id="modalDatasetName" class="text-base font-bold text-slate-900">Dataset Name</h3>
+        </div>
+        <button type="button" onclick="closeDatasetModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-md hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 text-xs">
+        
+        <p id="modalDatasetSummary" class="text-slate-600 leading-relaxed"></p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Total Samples</span>
+            <span id="modalDatasetSamples" class="font-mono font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Sensor Modality</span>
+            <span id="modalDatasetModality" class="font-medium text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Resolution</span>
+            <span id="modalDatasetResolution" class="font-mono text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Supervision Level</span>
+            <span id="modalDatasetSupervision" class="font-medium text-blue-700"></span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Benchmark AUROC</span>
+            <span id="modalDatasetBenchmark" class="font-mono font-bold text-emerald-600"></span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-semibold block uppercase">Licensing Terms</span>
+            <span id="modalDatasetLicense" class="font-mono text-slate-700"></span>
+          </div>
+        </div>
+
+        <div>
+          <span class="font-bold text-slate-800 block mb-1">Target Defect Anomalies:</span>
+          <ul id="modalDatasetDefects" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 bg-slate-50 p-3 rounded border border-slate-100">
+          </ul>
+        </div>
+
+        <div>
+          <span class="font-bold text-slate-800 block mb-1">Optical Hardware & Illumination Fit:</span>
+          <div id="modalDatasetHardware" class="p-2.5 bg-slate-50 rounded border border-slate-200 text-slate-700 font-mono text-[11px]"></div>
+        </div>
+
+      </div>
+
+      <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+        <a id="modalDatasetUrl" href="#" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+          <span>Official Host & Papers</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+        <button type="button" onclick="closeDatasetModal()" class="px-4 py-1.5 text-xs font-semibold bg-slate-200 hover:bg-slate-300 text-slate-800 rounded transition-colors">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ISO 9001 INSPECTION CERTIFICATE -->
+  <!-- ========================================== -->
+  <div id="certificateModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl border border-slate-300 max-w-xl w-full p-8 space-y-6 text-slate-900 relative">
+      
+      <!-- Certificate Header -->
+      <div class="text-center border-b-2 border-slate-900 pb-4">
+        <div class="text-xs font-bold uppercase tracking-widest text-slate-500">MESSI INDUSTRIAL AI SYSTEM</div>
+        <h2 class="text-xl font-black tracking-tight mt-1">CERTIFICATE OF OPTICAL INSPECTION QUALITY</h2>
+        <div class="text-xs text-slate-600 mt-1">ISO 9001:2015 §8.6 | IATF 16949 Section 9.1.1.1</div>
+      </div>
+
+      <!-- Cert Metadata -->
+      <div class="grid grid-cols-2 gap-4 text-xs">
+        <div>
+          <span class="text-slate-400 block font-semibold uppercase text-[10px]">Certificate No:</span>
+          <span class="font-mono font-bold">MESSI-QC-2026-90412</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold uppercase text-[10px]">Certification Date:</span>
+          <span id="certDate" class="font-medium">October 28, 2026</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold uppercase text-[10px]">Verified Lot Serial:</span>
+          <span id="certLot" class="font-mono font-bold">LOT-2026-10428</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold uppercase text-[10px]">First Pass Yield (FPY):</span>
+          <span id="certYield" class="font-mono font-bold text-emerald-700">99.42%</span>
+        </div>
+      </div>
+
+      <!-- Statement of Quality -->
+      <div class="p-3 bg-slate-50 rounded border border-slate-200 text-xs text-slate-700 leading-relaxed">
+        This document certifies that the aforementioned production batch has been 100% inspected via the 
+        <strong>Messi Automated Optical Inspection (AOI 4.0)</strong> sensor cluster. Visual inspection parameters, 
+        sub-pixel surface crack detection, and geometric tolerances strictly comply with IPC-A-610G and ASTM E1444 criteria.
+      </div>
+
+      <!-- Signatures Row -->
+      <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-200 text-xs">
+        <div>
+          <div class="h-10 border-b border-slate-300 flex items-end font-serif italic text-slate-600">A. Vance, Quality Dir.</div>
+          <div class="text-[10px] text-slate-500 uppercase mt-1">Quality Assurance Lead</div>
+        </div>
+        <div>
+          <div class="h-10 border-b border-slate-300 flex items-end font-mono text-emerald-600 font-bold">SHA-256: 7f8c92a0e41b...</div>
+          <div class="text-[10px] text-slate-500 uppercase mt-1">Cryptographic AOI Hash</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-2 pt-2 no-print">
+        <button type="button" onclick="window.printCertificate()" class="px-4 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>Print Certificate</span>
+        </button>
+        <button type="button" onclick="closeCertificateModal()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-900">Messi Platform</span>
+        <span>•</span>
+        <span>AI-Powered Industrial Visual Inspection and Quality Management</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/muzeemreniman113-arch/AI-Powered-Industrial-Visual-Inspection-and-Quality-Management.git" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 flex items-center gap-1 transition-colors">
+          <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+          <span>Repository</span>
+        </a>
+        <span>ISO 9001:2015 Compliant</span>
+        <span>IATF 16949 Ready</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/datasets-data.js"></script>
+  <script src="assets/js/inspection-engine.js"></script>
+  <script src="assets/js/qms-engine.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Global Export Wrappers
+    window.exportDatasetsJson = function() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(INDUSTRIAL_DATASETS, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `MESSI_Industrial_Inspection_Datasets_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    };
+
+    window.exportDatasetsCsv = function() {
+      const headers = ["ID", "Name", "Category", "Domain", "Modality", "Resolution", "Total Samples", "Train Split", "Test Split", "Supervision", "Annotation Type", "Benchmark Metric", "License", "Repository URL"];
+      const rows = INDUSTRIAL_DATASETS.map(d => [
+        d.id, `"${d.name}"`, `"${d.category}"`, `"${d.domain}"`, `"${d.modality}"`, `"${d.resolution}"`, d.totalSamples, `"${d.trainSplit}"`, `"${d.testSplit}"`, `"${d.supervision}"`, `"${d.annotationType}"`, `"${d.benchmarkAuroc}"`, `"${d.license}"`, `"${d.repositoryUrl}"`
+      ]);
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", encodeURI(csvContent));
+      downloadAnchor.setAttribute("download", `MESSI_Industrial_Inspection_Datasets_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    };
+
+    window.exportQmsLog = function(format) {
+      if (window.qmsEngine) {
+        window.qmsEngine.exportData(format);
+      }
+    };
+  </script>
+
+</body>
+</html>
